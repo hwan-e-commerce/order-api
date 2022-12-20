@@ -1,4 +1,4 @@
-package co.hwan.order.orderapi;
+package co.hwan.order;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

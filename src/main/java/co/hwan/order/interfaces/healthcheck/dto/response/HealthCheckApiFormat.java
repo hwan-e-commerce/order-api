@@ -1,4 +1,4 @@
-package co.hwan.order.orderapi.interfaces.dto.response;
+package co.hwan.order.interfaces.healthcheck.dto.response;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

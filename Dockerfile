@@ -12,7 +12,6 @@ FROM openjdk:11.0-slim
 WORKDIR /app
 COPY --from=builder /build/build/libs/order-api-0.0.1-SNAPSHOT.jar order-app.jar
 
-RUN ls
 
 EXPOSE 8080
 ENTRYPOINT [                     \

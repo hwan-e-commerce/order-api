@@ -1,4 +1,4 @@
-package co.hwan.order.orderapi;
+package co.hwan.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
