@@ -11,9 +11,11 @@
   pre_build:
     commands:
       - echo Logging to Amazon ECR
-      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 171679447334.dkr.ecr.ap-northeast-2.amazonaws.com
+      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_URL}
   build:
     on-failure: ABORT
     commands:
       - echo Build started on `date`
-      - docker build -
+      - docker build -t ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG} .
+      - echo Build Done
+      - ls
