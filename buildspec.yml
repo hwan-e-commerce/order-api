@@ -4,7 +4,7 @@
    variables:
      AWS_DEFAULT_REGION: "ap-northeast-2"
      ECR_URL: "171679447334.dkr.ecr.ap-northeast-2.amazonaws.com"
-     ECR_DOCKER_IMAGE: "order-api"
+     ECR_DOCKER_IMAGE: "order-api-registry"
      ECR_DOCKER_TAG: "1.0.0"
 
  phases:
@@ -17,6 +17,7 @@
     commands:
       - echo Build started on `date`
       - docker build -t ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG} .
+      - docker build -t order-api:${ECR_DOCKER_TAG} .
       - echo Build Done
   post_build:
     commands:
