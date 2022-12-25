@@ -18,4 +18,20 @@
       - echo Build started on `date`
       - docker build -t ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG} .
       - echo Build Done
-      - ls
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}
+
+ artifacts:
+   files:
+     - deploy/appspec.yml
+     - deploy/scripts/kill_process.sh
+     - deploy/scripts/run_process.sh
+     - deploy/docker-compose.yml
+   discard-paths: yes
+
+ cache:
+   paths:
+     - '/root/.m2/**/*'
