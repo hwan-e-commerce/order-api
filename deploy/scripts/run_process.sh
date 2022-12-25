@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REGION="ap-northeast-2"
-ACCOUNT_ID="657976307134"
+ACCOUNT_ID="171679447334"
 ECR_REPOSITORY="${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com"
 ECR_DOCKER_IMAGE="${ECR_REPOSITORY}/order-api-registry"
 ECR_DOCKER_TAG="1.0.0"
