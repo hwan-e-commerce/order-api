@@ -3,7 +3,7 @@
  env:
    variables:
      AWS_DEFAULT_REGION: "ap-northeast-2"
-     ECR_URL: "171679447334.dkr.ecr.ap-northeast-2.amazonaws.com/order-api-registry"
+     ECR_URL: "171679447334.dkr.ecr.ap-northeast-2.amazonaws.com"
      ECR_DOCKER_IMAGE: "order-api"
      ECR_DOCKER_TAG: "1.0.0"
 
