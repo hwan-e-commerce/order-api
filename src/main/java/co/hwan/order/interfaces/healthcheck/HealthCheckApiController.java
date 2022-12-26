@@ -13,6 +13,6 @@ public class HealthCheckApiController {
 
     @GetMapping
     ResponseEntity<HealthCheckApiFormat> healthCheck() {
-        return ResponseEntity.ok(HealthCheckApiFormat.of("OK V3"));
+        return ResponseEntity.ok(HealthCheckApiFormat.of("OK V4"));
     }
 }

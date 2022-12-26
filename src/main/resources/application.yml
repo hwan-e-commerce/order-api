@@ -1,6 +1,11 @@
 server:
   shutdown: graceful
 
+org:
+  gradle:
+    caching: true
+    daemon: true
+
 spring:
   config:
     activate:
