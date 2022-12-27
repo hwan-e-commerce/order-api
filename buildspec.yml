@@ -8,30 +8,30 @@ env:
    ECR_DOCKER_TAG: "1.0.0"
 
 phases:
-pre_build:
-  commands:
-    - echo Logging to Amazon ECR
-    - echo SOURCE_VERSION
-    - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_URL}
-build:
-  on-failure: ABORT
-  commands:
-    - echo Build started on `date`
-    - docker build -t ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG} .
-    - echo Build Done
-post_build:
-  commands:
-    - echo Build completed on `date`
-    - echo Pushing the Docker image...
-    - docker push ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}
+  pre_build:
+    commands:
+      - echo Logging to Amazon ECR
+      - echo SOURCE_VERSION
+      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_URL}
+  build:
+    on-failure: ABORT
+    commands:
+      - echo Build started on `date`
+      - docker build -t ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG} .
+      - echo Build Done
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push ${ECR_URL}/${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}
 
-artifacts:
- files:
-   - deploy/appspec.yml
-   - deploy/scripts/kill_process.sh
-   - deploy/scripts/run_process.sh
-   - deploy/docker-compose.yml
- discard-paths: yes
+  artifacts:
+   files:
+     - deploy/appspec.yml
+     - deploy/scripts/kill_process.sh
+     - deploy/scripts/run_process.sh
+     - deploy/docker-compose.yml
+   discard-paths: yes
 
 cache:
  paths:
