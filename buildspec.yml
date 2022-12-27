@@ -5,12 +5,12 @@
      AWS_DEFAULT_REGION: "ap-northeast-2"
      ECR_URL: "171679447334.dkr.ecr.ap-northeast-2.amazonaws.com"
      ECR_DOCKER_IMAGE: "order-api-registry"
-     ECR_DOCKER_TAG: "1.0.0"
 
  phases:
   pre_build:
     commands:
       - echo Logging to Amazon ECR
+      - echo SOURCE_VERSION
       - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_URL}
   build:
     on-failure: ABORT
