@@ -6,3 +6,8 @@ services:
     container_name: order-api
     ports:
       - "8080:8080"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ap-northeast-2
+        awslogs-group: order-instance-01

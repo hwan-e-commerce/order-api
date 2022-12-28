@@ -21,9 +21,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
-logging:
-  config: classpath:logback-local.xml
-
 ---
 spring:
   config:
