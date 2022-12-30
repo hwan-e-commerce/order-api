@@ -30,6 +30,7 @@ public class Partner extends AbstractEntity {
     private Long id;
     private String partnerToken;
     private String partnerName;
+    private String phoneNumber;
     private String businessNo;
     private String email;
 
@@ -44,14 +45,16 @@ public class Partner extends AbstractEntity {
     }
 
     @Builder
-    public Partner(String partnerName, String businessNo, String email) {
+    public Partner(String partnerName, String businessNo, String phoneNumber, String email) {
         if (StringUtils.isEmpty(partnerName)) throw new InvalidParamException("empty partnerName");
         if (StringUtils.isEmpty(businessNo)) throw new InvalidParamException("empty businessNo");
+        if (StringUtils.isEmpty(phoneNumber)) throw new InvalidParamException("empty partner phone number");
         if (StringUtils.isEmpty(email)) throw new InvalidParamException("empty email");
 
         this.partnerToken = TokenGenerator.randomCharacterWithPrefix(PREFIX_PARTNER);
         this.partnerName = partnerName;
         this.businessNo = businessNo;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.status = Status.ENABLE;
     }

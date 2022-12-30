@@ -1,0 +1,9 @@
+POST localhost:8080/api/partner
+Content-Type: application/json
+
+{
+  "name": "brandA",
+  "businessNo": "11-1234-1234",
+  "email": "test@test.com",
+  "phoneNumber": "323010-4055-62722"
+}
