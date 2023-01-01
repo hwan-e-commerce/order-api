@@ -2,7 +2,7 @@ package co.hwan.order.domain.partner;
 
 import co.hwan.order.common.exception.InvalidParamException;
 import co.hwan.order.common.util.TokenGenerator;
-import co.hwan.order.domain.AbstractEntity;
+import co.hwan.order.domain.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 @NoArgsConstructor
 @Table(name = "partners")
-public class Partner extends AbstractEntity {
+public class Partner extends Timestamp {
     private static final String PREFIX_PARTNER = "ptn_";
 
     @Id
