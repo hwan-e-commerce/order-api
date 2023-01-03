@@ -1,7 +1,6 @@
 package co.hwan.order.interfaces.partner;
 
-import co.hwan.order.application.partner.PartnerFacade;
-import co.hwan.order.interfaces.partner.PartnerDto.RegisterRequest;
+import co.hwan.order.domain.partner.PartnerService;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +17,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class PartnerApiController {
 
-    private final PartnerFacade partnerFacade;
+    private final PartnerService partnerService;
 
     @PostMapping
-    public ResponseEntity<?> regisPartner(@RequestBody @Valid RegisterRequest registerRequest) {
-        partnerFacade.registPartner(registerRequest.toCommand());
+    public ResponseEntity<?> regisPartner(@RequestBody @Valid PartnerDto.RegisterRequest registerRequest) {
+        partnerService.registerPartner(registerRequest);
         return ResponseEntity.created(URI.create("/api/partner")).build();
     }
 }

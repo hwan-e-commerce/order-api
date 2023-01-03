@@ -1,14 +1,13 @@
 package co.hwan.order.interfaces.partner;
 
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import co.hwan.order.application.partner.PartnerFacade;
-import co.hwan.order.domain.partner.PartnerCommand;
-import co.hwan.order.interfaces.partner.PartnerDto.RegisterRequest;
+import co.hwan.order.domain.partner.PartnerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +27,7 @@ public class PartnerApiControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PartnerFacade partnerFacade;
+    private PartnerService partnerService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -44,15 +43,12 @@ public class PartnerApiControllerTest {
     @Test
     public void regisPartner() throws Exception {
         // given
-        RegisterRequest registDto = RegisterRequest.of("Brand A", "11-123-456-", "branA@test.com",
-            "010-4055-6727");
-
-        PartnerCommand command = registDto.toCommand();
+        var registDto = new PartnerDto.RegisterRequest("Brand A", "11-123-456-1234", "branA@test.com","010-4055-6727");
 
         // when
         mockMvc.perform(post("/api/partner").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(registDto))).andExpect(status().isCreated());
 
-        verify(partnerFacade, times(1)).registPartner(command);
+        verify(partnerService, times(1)).registerPartner(refEq(registDto));
     }
 }

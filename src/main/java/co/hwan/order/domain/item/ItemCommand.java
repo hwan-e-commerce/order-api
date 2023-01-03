@@ -3,13 +3,18 @@ package co.hwan.order.domain.item;
 import co.hwan.order.domain.item.itemoption.ItemOption;
 import co.hwan.order.domain.item.optiongroup.ItemOptionGroup;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 public class ItemCommand {
+
     @Setter
     @Getter
+    @Builder
+    @ToString
     @RequiredArgsConstructor
     public static class RegisterItemRequest {
         private final String itemName;
@@ -27,6 +32,8 @@ public class ItemCommand {
 
     @Setter
     @Getter
+    @Builder
+    @ToString
     @RequiredArgsConstructor
     public static class RegisterItemOptionGroupRequest{
         private final Integer ordering;
@@ -44,6 +51,8 @@ public class ItemCommand {
 
     @Setter
     @Getter
+    @Builder
+    @ToString
     @RequiredArgsConstructor
     public static class RegisterItemOptionRequest {
         private final Integer ordering;

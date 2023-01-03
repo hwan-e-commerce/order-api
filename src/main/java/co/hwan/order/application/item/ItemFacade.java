@@ -14,6 +14,6 @@ public class ItemFacade {
     private final ItemService itemService;
 
     public void registerItem(ItemCommand.RegisterItemRequest registerItemRequest, String partnerToken) {
-        itemService.registerItem(registerItemRequest);
+        itemService.registerItem(registerItemRequest, partnerToken);
     }
 }
