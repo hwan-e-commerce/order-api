@@ -1,5 +1,6 @@
 package co.hwan.order.domain.item.optiongroup;
 
+import co.hwan.order.domain.Timestamp;
 import co.hwan.order.domain.item.Item;
 import co.hwan.order.domain.item.itemoption.ItemOption;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,9 +24,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "item_option_groups")
-public class ItemOptionGroup {
+public class ItemOptionGroup extends Timestamp {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "item_id")
@@ -38,12 +42,14 @@ public class ItemOptionGroup {
     public ItemOptionGroup(
         Item item,
         Integer ordering,
-        String itemOptionGroupName,
-        List<ItemOption> itemOptionList
+        String itemOptionGroupName
     ) {
         this.item = item;
         this.ordering = ordering;
         this.itemOptionGroupName = itemOptionGroupName;
-        this.itemOptionList = itemOptionList;
+    }
+
+    public void addOptions(List<ItemOption> itemOptions) {
+        this.itemOptionList = itemOptions;
     }
 }

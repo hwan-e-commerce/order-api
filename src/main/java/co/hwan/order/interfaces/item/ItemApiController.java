@@ -1,7 +1,6 @@
 package co.hwan.order.interfaces.item;
 
-import co.hwan.order.application.item.ItemFacade;
-import co.hwan.order.domain.item.ItemCommand;
+import co.hwan.order.domain.item.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/items")
 @RestController
 public class ItemApiController {
-    private final ItemFacade itemFacade;
+
+    private final ItemService itemService;
 
     @PostMapping("")
     public ResponseEntity<?> registerItem(@RequestBody ItemDto.RegisterItemRequest request) {
-        ItemCommand.RegisterItemRequest itemCommand = request.toCommand();
-        itemFacade.registerItem(itemCommand, request.getPartnerToken());
+        itemService.registerItem(request);
         return ResponseEntity.ok().build();
     }
 }

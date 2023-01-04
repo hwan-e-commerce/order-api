@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "partnerToken": "ptn_cphggBHTWtFXYVjq",
-  "itemName": "티셔츠",
+  "itemName": "후드-A",
   "itemPrice": 30000,
   "itemOptionGroupList": [
     {

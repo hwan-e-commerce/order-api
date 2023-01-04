@@ -77,4 +77,8 @@ public class Item extends Timestamp {
     public boolean availableSales() {
         return this.status == Status.ON_SALE;
     }
+
+    public void addItemOptionGroup(List<ItemOptionGroup> itemOptionGroups) {
+        this.itemOptionGroupList = itemOptionGroups;
+    }
 }

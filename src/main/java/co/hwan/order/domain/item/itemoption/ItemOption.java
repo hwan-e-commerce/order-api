@@ -1,6 +1,7 @@
 package co.hwan.order.domain.item.itemoption;
 
 import co.hwan.order.common.exception.InvalidParamException;
+import co.hwan.order.domain.Timestamp;
 import co.hwan.order.domain.item.optiongroup.ItemOptionGroup;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "item_options")
-public class ItemOption {
+public class ItemOption extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
