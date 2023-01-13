@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  stock-redis:
+    image: redis:alpine
+    container_name: stock-redis
+    ports:
+      - 6379:6379
+
+  controller:
+    image: ngrinder/controller
+    ports:
+      - "9090:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    volumes:
+      - ./ngrinder-controller:/opt/ngrinder-controller
+
+  agent:
+    image: ngrinder/agent
+    links:
+      - controller
+

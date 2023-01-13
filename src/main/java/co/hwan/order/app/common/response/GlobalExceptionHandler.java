@@ -15,6 +15,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        log.debug(ex.getMessage());
         return ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getFieldError());
     }
 

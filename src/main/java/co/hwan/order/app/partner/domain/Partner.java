@@ -39,7 +39,7 @@ public class Partner extends Timestamp {
 
     @Getter
     @RequiredArgsConstructor
-    private enum Status {
+    public enum Status {
         ENABLE("활성화"), DISABLE("비활성화");
         private final String description;
     }

@@ -1,4 +1,4 @@
-package co.hwan.order.app.order;
+package co.hwan.order.app.order.domain;
 
 import co.hwan.order.app.common.abstractentity.Timestamp;
 import java.time.LocalDateTime;

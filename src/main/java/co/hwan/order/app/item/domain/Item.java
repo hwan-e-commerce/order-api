@@ -1,8 +1,9 @@
 package co.hwan.order.app.item.domain;
 
+import co.hwan.order.app.common.abstractentity.Timestamp;
+import co.hwan.order.app.common.exception.InvalidItemStatusException;
 import co.hwan.order.app.common.exception.InvalidParamException;
 import co.hwan.order.app.common.util.TokenGenerator;
-import co.hwan.order.app.common.abstractentity.Timestamp;
 import co.hwan.order.app.item.itemoptiongroup.domain.ItemOptionGroup;
 import com.google.common.collect.Lists;
 import java.util.List;
@@ -40,6 +41,9 @@ public class Item extends Timestamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<ItemOptionGroup> itemOptionGroupList = Lists.newArrayList();
 
+//    @OneToOne(mappedBy = "items", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+//    private Stock stock;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -48,7 +52,8 @@ public class Item extends Timestamp {
     public enum Status {
         PREPARE("판매준비중"),
         ON_SALE("판매중"),
-        END_OF_SALE("판매종료");
+        END_OF_SALE("판매종료"),
+        OUT_OF_STOCK("재고소진");
 
         private final String description;
     }
@@ -80,5 +85,11 @@ public class Item extends Timestamp {
 
     public void addItemOptionGroup(List<ItemOptionGroup> itemOptionGroups) {
         this.itemOptionGroupList = itemOptionGroups;
+    }
+
+    public void checkOnSale() {
+        if(this.status == Status.END_OF_SALE) {
+            throw new InvalidItemStatusException();
+        }
     }
 }

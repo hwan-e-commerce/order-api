@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "partnerToken": "ptn_cphggBHTWtFXYVjq",
-  "itemName": "후드-A",
-  "itemPrice": 30000,
+  "itemName": "후드-C",
+  "itemPrice": 48000,
   "itemOptionGroupList": [
     {
       "ordering": "1",
@@ -35,15 +35,18 @@ Content-Type: application/json
       "itemOptionList": [
         {
           "ordering": 1,
-          "itemOptionName": "RED",
+          "itemOptionName": "BLACK",
           "itemOptionPrice": 0
         },
         {
           "ordering": 2,
-          "itemOptionName": "GOLD",
-          "itemOptionPrice": 1000
+          "itemOptionName": "WHITE",
+          "itemOptionPrice": 0
         }
       ]
     }
   ]
 }
+
+### 아이템 조회
+GET http://localhost:8080/api/v1/items/itm_jqVQTXgHWhIIoCki
