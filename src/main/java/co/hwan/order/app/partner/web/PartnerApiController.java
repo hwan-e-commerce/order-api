@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RequestMapping("/api/partner")
+@RequestMapping("/api/partners")
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class PartnerApiController {
@@ -22,6 +22,6 @@ public class PartnerApiController {
     @PostMapping
     public ResponseEntity<?> regisPartner(@RequestBody @Valid PartnerDto.RegisterRequest registerRequest) {
         partnerService.registerPartner(registerRequest);
-        return ResponseEntity.created(URI.create("/api/partner")).build();
+        return ResponseEntity.created(URI.create("/api/partners")).build();
     }
 }
