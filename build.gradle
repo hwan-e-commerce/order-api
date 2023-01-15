@@ -34,6 +34,7 @@ dependencies {
     implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
     // mysql
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'

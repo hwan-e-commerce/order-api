@@ -45,4 +45,14 @@ public class StockRedisService {
             .map(stock -> StockRegisterResponse.of(stock.getId(), stock.getItemToken(), stock.getRemain(), stock.getCreatedAt()))
             .orElseThrow(InvalidParamException::new);
     }
+
+    public void decreaseStock(String itemToken, int quantity) {
+        RedisStock stock = stockRepository.findRedisStockByItemToken(itemToken)
+            .orElseThrow(EntityNotFoundException::new);
+        log.info("=================");
+        log.info("saved stock remain {}", stock.getRemain());
+        log.info("=================");
+        stock.decrease(quantity);
+        stockRepository.save(stock);
+    }
 }
