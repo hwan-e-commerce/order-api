@@ -13,6 +13,12 @@ spring:
     url: jdbc:mysql://localhost:3306/order?characterEncoding=UTF-8&serverTimeZone=Asia/Seoul
     username: root
     password: 1234
+    hikari:
+      maximum-pool-size: 30
+      read-only: false
+      connection-timeout: 1000
+      connectionTestQuery : SELECT 1
+
 
   jpa:
     hibernate:
@@ -26,6 +32,10 @@ spring:
   redis:
     host: localhost
     port: 6379
+
+logging:
+  level:
+    com.zaxxer.hikari.pool.HikariPool: debug
 
 ---
 spring:
@@ -41,6 +51,11 @@ spring:
     url: ${jdbc.url}
     username: ${jdbc.username}
     password: ${jdbc.password}
+    hikari:
+      maximum-pool-size: 30
+      read-only: false
+      connection-timeout: 1000
+      connectionTestQuery: SELECT 1
 
   jpa:
     hibernate:
@@ -59,3 +74,7 @@ aws:
     prefix: /config
     profile-separator: _
     name: orderapi
+
+logging:
+  level:
+    com.zaxxer.hikari.pool.HikariPool: debug
