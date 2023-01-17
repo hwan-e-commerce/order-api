@@ -1,4 +1,4 @@
-package co.hwan.order.app.stock.domain;
+package co.hwan.order.app.item.stock.domain;
 
 
 import co.hwan.order.app.common.exception.InvalidStockException;

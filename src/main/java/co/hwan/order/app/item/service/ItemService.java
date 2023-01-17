@@ -5,6 +5,9 @@ import co.hwan.order.app.common.exception.ItemPartnerIdNotValidException;
 import co.hwan.order.app.item.domain.Item;
 import co.hwan.order.app.item.itemoption.domain.ItemOption;
 import co.hwan.order.app.item.itemoptiongroup.domain.ItemOptionGroup;
+import co.hwan.order.app.item.stock.domain.Stock;
+import co.hwan.order.app.item.stock.web.StockDto.StockRegisterRequest;
+import co.hwan.order.app.item.stock.web.StockDto.StockRegisterResponse;
 import co.hwan.order.app.item.web.ItemDto.ItemDetailResponse;
 import co.hwan.order.app.item.web.ItemDto.ItemOptionGroupResponse;
 import co.hwan.order.app.item.web.ItemDto.ItemOptionResponse;
@@ -13,6 +16,7 @@ import co.hwan.order.app.item.web.ItemDto.RegisterItemRequest;
 import co.hwan.order.app.partner.domain.Partner;
 import co.hwan.order.app.item.repository.ItemRepository;
 import co.hwan.order.app.partner.repository.PartnerRepository;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -82,4 +86,24 @@ public class ItemService {
             itemOptionGroupResponses
         );
     }
+
+    @Transactional
+    public StockRegisterResponse registerItemStock(StockRegisterRequest stockRegisterRequest) {
+        String itemToken = stockRegisterRequest.getItemToken();
+        Item item = itemRepository.findByItemToken(itemToken)
+            .orElseThrow(EntityNotFoundException::new);
+
+        Stock itemStock = item.getStock();
+        itemStock.changeRemain(stockRegisterRequest.getQuantity());
+        Item savedItem = itemRepository.save(item);
+        Stock savedStock = savedItem.getStock();
+
+        return StockRegisterResponse.builder()
+            .stockId(savedStock.getId())
+            .itemToken(savedItem.getItemToken())
+            .quantity(savedStock.getRemain())
+            .createdAt(savedStock.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE))
+            .build();
+    }
+
 }

@@ -10,7 +10,6 @@ import co.hwan.order.app.order.domain.OrderItemOptionGroup;
 import co.hwan.order.app.order.repository.OrderRepository;
 import co.hwan.order.app.order.web.OrderDto;
 import co.hwan.order.app.order.web.OrderDto.OrderRegisterResponse;
-import co.hwan.order.app.stock.service.StockRedisService;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -25,23 +24,25 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
-    private final StockRedisService stockRedisService;
+//    private final StockRedisService stockRedisService;
 
     @Transactional
     public OrderRegisterResponse registerOrder(OrderDto.OrderRegisterDto orderRegisterDto) {
-        log.info("orderRegisterDto {}", orderRegisterDto);
         Order initOrder = orderRegisterDto.toEntity(orderRegisterDto.toFragment());
 
-        List<OrderItem> orderItems = orderRegisterDto.getOrderItemList().stream()
+        List<OrderItem> orderItems = orderRegisterDto.getOrderItemList()
+            .stream()
             .map(
                 registerOrderItem -> {
-                    log.info("item token: {}", registerOrderItem.getItemToken());
-                    Item item = itemRepository.findByItemToken(registerOrderItem.getItemToken())
+                    Item item = itemRepository.findWithPessimisticLockByItemToken(registerOrderItem.getItemToken())
                         .orElseThrow(EntityNotFoundException::new);
+                    // 재고 감소
+                    item.getStock().decrease(registerOrderItem.getOrderCount());
 
                     OrderItem orderItem = registerOrderItem.toEntity(initOrder, item.getId(), item.getPartnerId());
 
-                    List<OrderItemOptionGroup> orderItemOptionGroups = registerOrderItem.getOrderItemOptionGroupList()
+                    List<OrderItemOptionGroup> orderItemOptionGroups = registerOrderItem
+                        .getOrderItemOptionGroupList()
                         .stream()
                         .map(registerOrderItemOptionGroupRequest -> {
                             OrderItemOptionGroup orderItemOptionGroup = registerOrderItemOptionGroupRequest.toEntity(orderItem);

@@ -48,7 +48,7 @@ public class PartnerApiControllerTest {
         var registDto = new PartnerDto.RegisterRequest("Brand A", "11-123-456-1234", "branA@test.com","010-4055-6727");
 
         // when
-        mockMvc.perform(post("/api/partner").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/partners").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(registDto))).andExpect(status().isCreated());
 
         verify(partnerService, times(1)).registerPartner(refEq(registDto));

@@ -60,7 +60,7 @@ create table item_options
 create table stocks
 (
     id                   bigint auto_increment primary key comment 'ID',
-    item_token           varchar(255) not null unique,
+    item_id           varchar(255) not null unique,
     remain               int not null default 0 comment  '남은 수량',
     created_at           datetime(6) not null comment '생성 일시',
     updated_at           datetime(6) null comment '수정 일시',

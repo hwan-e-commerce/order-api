@@ -1,7 +1,8 @@
-package co.hwan.order.app.stock.web;
+package co.hwan.order.app.item.stock.web;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,13 +24,18 @@ public class StockDto {
         private final int quantity;
         private final String createdAt;
 
-        private StockRegisterResponse(Long id, String itemToken, int stock, String createdAt) {
-            this.id = id;
+        @Builder
+        public StockRegisterResponse(Long stockId, String itemToken, int quantity, String createdAt) {
+            this.id = stockId;
             this.itemToken = itemToken;
-            this.quantity = stock;
+            this.quantity = quantity;
             this.createdAt = createdAt;
         }
 
+        /**
+         * todo
+         *  builder로 교체
+         */
         public static StockRegisterResponse of(Long id, String itemToken, int stock, String createdAt) {
            return new StockRegisterResponse(id, itemToken, stock, createdAt);
         }

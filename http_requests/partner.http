@@ -1,9 +1,9 @@
-POST localhost:8080/api/partner
+POST localhost:8080/api/partners
 Content-Type: application/json
 
 {
-  "name": "brandC",
-  "businessNo": "11-1234-1234",
-  "email": "testC@gmail.com",
-  "phoneNumber": "22349-4055-62722"
+  "name": "brand A",
+  "businessNo": "12-13234-439321",
+  "email": "test-A@gmail.com",
+  "phoneNumber": "010-2355-6272"
 }

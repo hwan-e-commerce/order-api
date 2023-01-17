@@ -1,27 +1,25 @@
-package co.hwan.order.app.stock.service;
+package co.hwan.order.app.item.stock.service;
 
 import co.hwan.order.app.common.exception.EntityNotFoundException;
 import co.hwan.order.app.common.exception.InvalidParamException;
 import co.hwan.order.app.item.domain.Item;
 import co.hwan.order.app.item.repository.ItemRepository;
-import co.hwan.order.app.stock.domain.RedisStock;
-import co.hwan.order.app.stock.repository.StockRedisRepository;
-import co.hwan.order.app.stock.web.StockDto;
-import co.hwan.order.app.stock.web.StockDto.StockRegisterRequest;
-import co.hwan.order.app.stock.web.StockDto.StockRegisterResponse;
+import co.hwan.order.app.item.stock.domain.RedisStock;
+import co.hwan.order.app.item.stock.repository.StockRedisRepository;
+import co.hwan.order.app.item.stock.web.StockDto;
+import co.hwan.order.app.item.stock.web.StockDto.StockRegisterRequest;
+import co.hwan.order.app.item.stock.web.StockDto.StockRegisterResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class StockRedisService {
 
     private final StockRedisRepository stockRepository;
     private final ItemRepository itemRepository;
-
-    public StockRedisService(StockRedisRepository stockRepository, ItemRepository itemRepository) {
-        this.stockRepository = stockRepository; this.itemRepository = itemRepository;
-    }
 
     public StockRegisterResponse registerStock(StockRegisterRequest request) {
         Item item = itemRepository.findByItemToken(request.getItemToken())

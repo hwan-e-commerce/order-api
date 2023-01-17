@@ -1,6 +1,6 @@
-package co.hwan.order.app.stock.repository;
+package co.hwan.order.app.item.stock.repository;
 
-import co.hwan.order.app.stock.domain.RedisStock;
+import co.hwan.order.app.item.stock.domain.RedisStock;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 

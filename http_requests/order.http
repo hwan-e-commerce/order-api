@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "payMethod": "NAVER_PAY",
-  "receiverName": "김창환",
+  "receiverName": "홍당무",
   "receiverPhone": "01012341234",
   "receiverZipcode": "12345",
   "receiverAddress1": "서울시 강동구",
@@ -12,10 +12,10 @@ Content-Type: application/json
   "etcMessage": "감사합니다",
   "orderItemList": [
     {
-      "orderCount": 2,
-      "itemToken": "itm_UTeyXpqktvaRfAiL",
-      "itemName": "티셔츠",
-      "itemPrice": "30000",
+      "orderCount": 1,
+      "itemToken": "itm_OjHvIAGsnEkusaQh",
+      "itemName": "후드 A",
+      "itemPrice": "48000",
       "orderItemOptionGroupList": [
         {
           "ordering": 1,
@@ -34,8 +34,8 @@ Content-Type: application/json
           "orderItemOptionList": [
             {
               "ordering": 1,
-              "itemOptionName": "GOLD",
-              "itemOptionPrice": 1000
+              "itemOptionName": "BLACK",
+              "itemOptionPrice": 0
             }
           ]
         }
@@ -43,9 +43,9 @@ Content-Type: application/json
     },
     {
       "orderCount": 1,
-      "itemToken": "itm_FacLIEgnXFGNcszh",
-      "itemName": "양말",
-      "itemPrice": "10000",
+      "itemToken": "itm_mLldElfKNGijrgjT",
+      "itemName": "후드 C",
+      "itemPrice": "43000",
       "orderItemOptionGroupList": [
         {
           "ordering": 1,
@@ -64,7 +64,7 @@ Content-Type: application/json
           "orderItemOptionList": [
             {
               "ordering": 1,
-              "itemOptionName": "RED",
+              "itemOptionName": "BLACK",
               "itemOptionPrice": 0
             }
           ]

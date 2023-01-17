@@ -14,7 +14,8 @@ public enum ErrorCode {
     ORDER_QUANTITY_EXCEEDED("주문 수량이 초과되었습니다."),
     STOCK_NOT_SALE("판매 중인 상품이 아닙니다."),
     INVALID_ITEM_PARTNER_ID("Item에 등록된 Partner Id가 없습니다."),
-    ORDER_ITEMS_NULL("주문 Item이 초기화되지 않았습니다."); // 500 대상
+    ORDER_ITEMS_NULL("주문 Item이 초기화되지 않았습니다."),// 500 대상
+    INVALID_QUANTITY("주문 요청 수량은 0이하가 될 수 없습니다.");
 
     private final String errorMsg;
 
