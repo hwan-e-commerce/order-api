@@ -31,7 +31,6 @@ public class StockRedisService {
         RedisStock saved = stockRepository.save(stock);
 
         return StockDto.StockRegisterResponse.of(
-            saved.getId(),
             saved.getItemToken(),
             saved.getRemain(),
             saved.getCreatedAt()
@@ -40,7 +39,7 @@ public class StockRedisService {
 
     public StockRegisterResponse getStockByItemToken(String itemToken) {
         return stockRepository.findRedisStockByItemToken(itemToken)
-            .map(stock -> StockRegisterResponse.of(stock.getId(), stock.getItemToken(), stock.getRemain(), stock.getCreatedAt()))
+            .map(stock -> StockRegisterResponse.of(stock.getItemToken(), stock.getRemain(), stock.getCreatedAt()))
             .orElseThrow(InvalidParamException::new);
     }
 

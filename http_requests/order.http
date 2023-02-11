@@ -13,7 +13,7 @@ Content-Type: application/json
   "orderItemList": [
     {
       "orderCount": 1,
-      "itemToken": "itm_OjHvIAGsnEkusaQh",
+      "itemToken": "itm_zVUmlTrEzdDtjeWB",
       "itemName": "후드 A",
       "itemPrice": "48000",
       "orderItemOptionGroupList": [
@@ -24,36 +24,6 @@ Content-Type: application/json
             {
               "ordering": 1,
               "itemOptionName": "MEDIUM",
-              "itemOptionPrice": 0
-            }
-          ]
-        },
-        {
-          "ordering": 2,
-          "itemOptionGroupName": "컬러",
-          "orderItemOptionList": [
-            {
-              "ordering": 1,
-              "itemOptionName": "BLACK",
-              "itemOptionPrice": 0
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "orderCount": 1,
-      "itemToken": "itm_mLldElfKNGijrgjT",
-      "itemName": "후드 C",
-      "itemPrice": "43000",
-      "orderItemOptionGroupList": [
-        {
-          "ordering": 1,
-          "itemOptionGroupName": "사이즈",
-          "orderItemOptionList": [
-            {
-              "ordering": 1,
-              "itemOptionName": "LARGE",
               "itemOptionPrice": 0
             }
           ]

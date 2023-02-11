@@ -5,30 +5,30 @@ import co.hwan.order.app.common.exception.ItemPartnerIdNotValidException;
 import co.hwan.order.app.item.domain.Item;
 import co.hwan.order.app.item.itemoption.domain.ItemOption;
 import co.hwan.order.app.item.itemoptiongroup.domain.ItemOptionGroup;
-import co.hwan.order.app.item.stock.domain.Stock;
-import co.hwan.order.app.item.stock.web.StockDto.StockRegisterRequest;
-import co.hwan.order.app.item.stock.web.StockDto.StockRegisterResponse;
+import co.hwan.order.app.item.repository.ItemRepository;
 import co.hwan.order.app.item.web.ItemDto.ItemDetailResponse;
 import co.hwan.order.app.item.web.ItemDto.ItemOptionGroupResponse;
 import co.hwan.order.app.item.web.ItemDto.ItemOptionResponse;
 import co.hwan.order.app.item.web.ItemDto.ItemRegisterResponse;
 import co.hwan.order.app.item.web.ItemDto.RegisterItemRequest;
 import co.hwan.order.app.partner.domain.Partner;
-import co.hwan.order.app.item.repository.ItemRepository;
 import co.hwan.order.app.partner.repository.PartnerRepository;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Service
 public class ItemService {
 
     private final ItemRepository itemRepository;
     private final PartnerRepository partnerRepository;
+
+    public ItemService(ItemRepository itemRepository, PartnerRepository partnerRepository) {
+        this.itemRepository = itemRepository;
+        this.partnerRepository = partnerRepository;
+    }
 
     @Transactional
     public ItemRegisterResponse registerItem(RegisterItemRequest registerItemRequest) {
@@ -37,11 +37,12 @@ public class ItemService {
             .orElseThrow(() -> new EntityNotFoundException("Partner Not Exist"));
 
         Item initItem = registerItemRequest.toEntity(partner.getId());
+        Item storedItem = itemRepository.save(initItem);
 
-        List<ItemOptionGroup> itemOptionGroups = registerItemRequest.getItemOptionGroupList().stream()
+        List<ItemOptionGroup> itemOptionGroups = registerItemRequest.getItemOptionGroupList()
+            .stream()
             .map(itemOptionGroupRequest -> {
-                ItemOptionGroup itemOptionGroup = itemOptionGroupRequest.toEntity(initItem);
-
+                ItemOptionGroup itemOptionGroup = itemOptionGroupRequest.toEntity(storedItem);
                 List<ItemOption> itemOptions = itemOptionGroupRequest.getItemOptionList().stream()
                     .map(itemOptionRequest -> itemOptionRequest.toEntity(itemOptionGroup))
                     .collect(Collectors.toList());
@@ -51,10 +52,9 @@ public class ItemService {
                 return itemOptionGroup;
             }).collect(Collectors.toList());
 
-        initItem.addItemOptionGroup(itemOptionGroups);
-        Item item = itemRepository.save(initItem);
+        storedItem.addItemOptionGroup(itemOptionGroups);
 
-        return ItemRegisterResponse.of(partner.getPartnerName(), item.getItemName(), item.getItemToken());
+        return ItemRegisterResponse.of(partner.getPartnerName(), storedItem.getItemName(), storedItem.getItemToken());
     }
 
     @Transactional
@@ -85,25 +85,6 @@ public class ItemService {
             item.getItemPrice(),
             itemOptionGroupResponses
         );
-    }
-
-    @Transactional
-    public StockRegisterResponse registerItemStock(StockRegisterRequest stockRegisterRequest) {
-        String itemToken = stockRegisterRequest.getItemToken();
-        Item item = itemRepository.findByItemToken(itemToken)
-            .orElseThrow(EntityNotFoundException::new);
-
-        Stock itemStock = item.getStock();
-        itemStock.changeRemain(stockRegisterRequest.getQuantity());
-        Item savedItem = itemRepository.save(item);
-        Stock savedStock = savedItem.getStock();
-
-        return StockRegisterResponse.builder()
-            .stockId(savedStock.getId())
-            .itemToken(savedItem.getItemToken())
-            .quantity(savedStock.getRemain())
-            .createdAt(savedStock.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE))
-            .build();
     }
 
 }

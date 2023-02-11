@@ -3,6 +3,7 @@ package co.hwan.order.app.order.service;
 import co.hwan.order.app.common.exception.EntityNotFoundException;
 import co.hwan.order.app.item.domain.Item;
 import co.hwan.order.app.item.repository.ItemRepository;
+import co.hwan.order.app.item.stock.service.StockService;
 import co.hwan.order.app.order.domain.Order;
 import co.hwan.order.app.order.domain.OrderItem;
 import co.hwan.order.app.order.domain.OrderItemOption;
@@ -12,19 +13,19 @@ import co.hwan.order.app.order.web.OrderDto;
 import co.hwan.order.app.order.web.OrderDto.OrderRegisterResponse;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
+//@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderService {
 
+
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
-//    private final StockRedisService stockRedisService;
+    private final StockService stockService;
 
     @Transactional
     public OrderRegisterResponse registerOrder(OrderDto.OrderRegisterDto orderRegisterDto) {
@@ -36,8 +37,8 @@ public class OrderService {
                 registerOrderItem -> {
                     Item item = itemRepository.findWithPessimisticLockByItemToken(registerOrderItem.getItemToken())
                         .orElseThrow(EntityNotFoundException::new);
-                    // 재고 감소
-                    item.getStock().decrease(registerOrderItem.getOrderCount());
+
+                    stockService.decreaseStockOfItem(item, registerOrderItem.getOrderCount());
 
                     OrderItem orderItem = registerOrderItem.toEntity(initOrder, item.getId(), item.getPartnerId());
 
@@ -60,8 +61,7 @@ public class OrderService {
                     orderItem.setOrderItemOptionGroups(orderItemOptionGroups);
                     return orderItem;
                 }
-            )
-            .collect(Collectors.toList());
+            ).collect(Collectors.toList());
 
         initOrder.setOrderItems(orderItems);
         initOrder.calculateTotalAmount();

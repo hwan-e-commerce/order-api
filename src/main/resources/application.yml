@@ -71,7 +71,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
   redis:
-    host: 13.124.127.88
+    host: ${redis.host}
     port: 6379
 
 aws:

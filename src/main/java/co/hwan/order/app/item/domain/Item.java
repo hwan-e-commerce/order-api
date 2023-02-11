@@ -5,7 +5,6 @@ import co.hwan.order.app.common.exception.InvalidItemStatusException;
 import co.hwan.order.app.common.exception.InvalidParamException;
 import co.hwan.order.app.common.util.TokenGenerator;
 import co.hwan.order.app.item.itemoptiongroup.domain.ItemOptionGroup;
-import co.hwan.order.app.item.stock.domain.Stock;
 import com.google.common.collect.Lists;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -17,7 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,9 +45,6 @@ public class Item extends Timestamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<ItemOptionGroup> itemOptionGroupList = Lists.newArrayList();
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private Stock stock;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -75,7 +70,6 @@ public class Item extends Timestamp {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.status = Status.PREPARE;
-        this.stock = new Stock(this.itemToken, 0);
     }
 
     public void changeOnSale() {
@@ -88,16 +82,6 @@ public class Item extends Timestamp {
 
     public boolean availableSales() {
         return this.status == Status.ON_SALE;
-    }
-
-    public Stock getStock() {
-        if(this.stock == null) {
-            Stock stock = new Stock(this.itemToken, 0);
-            this.stock = stock;
-            return stock;
-        } else {
-            return this.stock;
-        }
     }
 
     public void addItemOptionGroup(List<ItemOptionGroup> itemOptionGroups) {

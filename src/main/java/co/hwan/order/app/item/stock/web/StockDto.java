@@ -1,5 +1,6 @@
 package co.hwan.order.app.item.stock.web;
 
+import co.hwan.order.app.item.stock.domain.Stock;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -14,30 +15,39 @@ public class StockDto {
         @NotBlank(message = "item token should not blank")
         String itemToken;
         @Min(value = 1, message = "stock quantity must be greater than 0 ")
-        int quantity;
+        Integer quantity;
+
+        public StockRegisterRequest(String itemToken, Integer quantity) {
+            this.itemToken = itemToken;
+            this.quantity = quantity;
+        }
+
+        public Stock toEntity() {
+            return new Stock(
+                this.itemToken,
+                this.quantity
+            );
+        }
     }
 
     @Getter
     static public class StockRegisterResponse {
-        private final Long id;
         private final String itemToken;
-        private final int quantity;
+        private final Integer quantity;
         private final String createdAt;
 
         @Builder
-        public StockRegisterResponse(Long stockId, String itemToken, int quantity, String createdAt) {
-            this.id = stockId;
+        public StockRegisterResponse(
+            String itemToken,
+            Integer quantity,
+            String createdAt
+        ) {
             this.itemToken = itemToken;
             this.quantity = quantity;
             this.createdAt = createdAt;
         }
-
-        /**
-         * todo
-         *  builder로 교체
-         */
-        public static StockRegisterResponse of(Long id, String itemToken, int stock, String createdAt) {
-           return new StockRegisterResponse(id, itemToken, stock, createdAt);
+        public static StockRegisterResponse of(String itemToken, Integer stock, String createdAt) {
+           return new StockRegisterResponse(itemToken, stock, createdAt);
         }
     }
 }

@@ -5,6 +5,7 @@ if table not exists create table partners (
     id            bigint auto_increment primary key comment 'ID',
     partner_token varchar(255) not null comment 'partner_token',
     partner_name  varchar(255) not null comment '파트너명',
+    phone_number  varchar(36)  not null comment '전화번호',
     business_no   varchar(255) not null comment '사업자등록번호',
     email         varchar(255) not null comment 'email',
     status        varchar(30)  not null default 'ENABLE' comment '상태',
@@ -68,12 +69,12 @@ create table stocks
     FOREIGN KEY (item_token) REFERENCES items(item_token)
 ) comment 'stocks' charset = utf8mb4;
 
-
 -- order
 create table orders
 (
     id                bigint auto_increment primary key comment 'ID',
     order_token       varchar(255) not null comment 'order_token',
+    order_number      varchar(128) not null comment '주문 번호',
     pay_method        varchar(30)  not null comment '결제수단',
     receiver_name     varchar(30)  not null comment '수령자명',
     receiver_phone    varchar(30)  not null comment '수령자 휴대폰번호',
@@ -81,8 +82,8 @@ create table orders
     receiver_address1 varchar(255) not null comment '수령자 주소1',
     receiver_address2 varchar(255) not null comment '수령자 주소2',
     etc_message       varchar(255) not null comment '남기는 말',
+    total_price       bigint       not null comment '주문 총합',
     status            varchar(30)  not null default 'INIT' comment '상태',
-    ordered_at        datetime(6) not null comment '주문 일시',
     created_at        datetime(6) not null comment '생성 일시',
     updated_at        datetime(6) null comment '수정 일시'
 ) comment 'orders' charset = utf8mb4;

@@ -42,6 +42,8 @@ public class Stock extends Timestamp {
 
     public void decrease(Integer quantity) {
         checkValidRemain(quantity);
+
+        final String LOCK_NAME = "stock-lock";
         this.remain -= quantity;
     }
 
@@ -56,7 +58,7 @@ public class Stock extends Timestamp {
         if(this.remain < 1) throw new InvalidStockException();
         if(this.remain - quantity < 0) throw new InvalidStockException(ErrorCode.ORDER_QUANTITY_EXCEEDED);
         if(quantity < 1) {
-            log.info("Order Item Quantity: {}L", quantity);
+            log.info("Order Item Quantity: {}", quantity);
             throw new InvalidParamException(ErrorCode.INVALID_QUANTITY);
         }
     }
