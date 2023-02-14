@@ -32,14 +32,13 @@ public class StockRedisService {
 
         return StockDto.StockRegisterResponse.of(
             saved.getItemToken(),
-            saved.getRemain(),
-            saved.getCreatedAt()
+            saved.getRemain()
         );
     }
 
     public StockRegisterResponse getStockByItemToken(String itemToken) {
         return stockRepository.findRedisStockByItemToken(itemToken)
-            .map(stock -> StockRegisterResponse.of(stock.getItemToken(), stock.getRemain(), stock.getCreatedAt()))
+            .map(stock -> StockRegisterResponse.of(stock.getItemToken(), stock.getRemain()))
             .orElseThrow(InvalidParamException::new);
     }
 

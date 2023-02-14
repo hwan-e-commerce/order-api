@@ -1,18 +1,15 @@
 package co.hwan.order.app.item.stock.service;
 
 import co.hwan.order.app.common.annotations.DistributeLock;
-import co.hwan.order.app.common.exception.EntityNotFoundException;
 import co.hwan.order.app.common.exception.InvalidParamException;
 import co.hwan.order.app.item.domain.Item;
-import co.hwan.order.app.item.repository.ItemRepository;
-import co.hwan.order.app.item.stock.domain.Stock;
-import co.hwan.order.app.item.stock.repository.StockRepository;
 import co.hwan.order.app.item.stock.web.StockDto;
 import co.hwan.order.app.item.stock.web.StockDto.StockRegisterResponse;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,30 +19,42 @@ import org.springframework.transaction.annotation.Transactional;
 public class StockService {
 
     private static final String STOCK_KEY_PREFIX = "STOCK_";
-    private final ItemRepository itemRepository;
-    private final StockRepository stockRepository;
+    private final StringRedisTemplate stringRedisTemplate;
 
     @Transactional
     public StockRegisterResponse registStockOfItem(StockDto.StockRegisterRequest dto)  {
-        itemRepository.findByItemToken(dto.getItemToken())
-            .orElseThrow(() -> new InvalidParamException("Item Token is Not Found"));
+        int remain = 0;
 
-        Stock stock = dto.toEntity();
-        stockRepository.save(stock);
+        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+        String res = stringValueOperations.get(dto.getItemToken());
+
+        if(res == null) {
+            //신규
+            remain = dto.getQuantity();
+            stringValueOperations.set(dto.getItemToken(), String.valueOf(remain));
+        } else {
+            remain = dto.getQuantity() + Integer.parseInt(res);
+            stringValueOperations.set(dto.getItemToken(), String.valueOf(remain));
+        }
 
         return StockRegisterResponse.of(
-            stock.getItemToken(),
-            stock.getRemain(),
-            stock.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE)
+            dto.getItemToken(),
+            remain
         );
     }
 
     @DistributeLock(key = STOCK_KEY_PREFIX)
     public void decreaseStockOfItem(Item item, Integer quantity) {
         String itemToken = Objects.requireNonNull(item.getItemToken());
-        Stock stock = stockRepository.findByItemToken(itemToken)
-            .orElseThrow(EntityNotFoundException::new);
 
-        stock.decrease(quantity);
+        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+        String res = stringValueOperations.get(item.getItemToken());
+
+        if(res == null) {
+            throw new InvalidParamException("등록된 재고가 없습니다.");
+        }
+
+        int i = Integer.parseInt(res) - quantity;
+        stringValueOperations.set(itemToken, String.valueOf(i));
     }
 }

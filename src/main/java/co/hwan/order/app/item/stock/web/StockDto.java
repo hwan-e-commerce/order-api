@@ -34,20 +34,17 @@ public class StockDto {
     static public class StockRegisterResponse {
         private final String itemToken;
         private final Integer quantity;
-        private final String createdAt;
 
         @Builder
         public StockRegisterResponse(
             String itemToken,
-            Integer quantity,
-            String createdAt
+            Integer quantity
         ) {
             this.itemToken = itemToken;
             this.quantity = quantity;
-            this.createdAt = createdAt;
         }
-        public static StockRegisterResponse of(String itemToken, Integer stock, String createdAt) {
-           return new StockRegisterResponse(itemToken, stock, createdAt);
+        public static StockRegisterResponse of(String itemToken, Integer stock) {
+           return new StockRegisterResponse(itemToken, stock);
         }
     }
 }
