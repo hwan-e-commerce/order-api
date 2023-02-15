@@ -1,6 +1,7 @@
 package co.hwan.order.app.aop.distributelock;
 
 import co.hwan.order.app.common.annotations.DistributeLock;
+import co.hwan.order.app.common.exception.InvalidParamException;
 import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class DistributeLockAop {
+
     private static final String REDISSON_KEY_PREFIX = "RLOCK_";
     private final RedissonClient redissonClient;
 
@@ -24,10 +26,10 @@ public class DistributeLockAop {
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        DistributeLock distributeLock = method.getAnnotation(DistributeLock.class);     // (1)
+        DistributeLock distributeLock = method.getAnnotation(DistributeLock.class);
 
         String key = REDISSON_KEY_PREFIX;
-        RLock rLock = redissonClient.getLock(key);    // (3)
+        RLock rLock = redissonClient.getLock(key);
 
         try {
             boolean available = rLock.tryLock(distributeLock.waitTime(), distributeLock.leaseTime(), distributeLock.timeUnit());    // (4)
@@ -36,13 +38,14 @@ public class DistributeLockAop {
             }
             log.info("get lock success {}" , key);
             return joinPoint.proceed();
+        } catch(InvalidParamException e) {
+            log.info(e.getMessage());
+            throw e;
         } catch (Exception e) {
             Thread.currentThread().interrupt();
             throw new InterruptedException();
         } finally {
-            rLock.unlock();    // (6)
+            rLock.unlock();
         }
     }
-
-
 }

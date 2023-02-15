@@ -16,7 +16,7 @@ spring:
     hikari:
       maximum-pool-size: 30
       read-only: false
-      connection-timeout: 1000
+      connection-timeout: 3000
       connectionTestQuery : SELECT 1
 
 

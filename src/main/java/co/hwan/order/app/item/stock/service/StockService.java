@@ -49,13 +49,31 @@ public class StockService {
 
         ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
         String res = stringValueOperations.get(item.getItemToken());
-        log.info("stock cnt: {}" + res);
-        if(res == null) {
+        checkStockExistInRedis(res);
+
+        int remain = Integer.parseInt(res);
+        checkStockIsZeroInRedis(remain);
+        remain = remain - quantity;
+        checkOrderQuantityIsValid(remain);
+        stringValueOperations.set(itemToken, String.valueOf(remain));
+    }
+
+
+    private void checkStockExistInRedis(String stockOfRedis) {
+        if(stockOfRedis == null) {
             throw new InvalidParamException("등록된 재고가 없습니다.");
         }
+    }
 
-        int i = Integer.parseInt(res) - quantity;
-        log.info("stock remain: {}" + res);
-        stringValueOperations.set(itemToken, String.valueOf(i));
+    private void checkStockIsZeroInRedis(int stock) {
+        if(stock == 0) {
+            throw new InvalidParamException("재고가 모두 소진되었습니다.");
+        }
+    }
+
+    private void checkOrderQuantityIsValid(int remain) {
+        if(remain < 0) {
+            throw new InvalidParamException("재고가 부족합니다.");
+        }
     }
 }

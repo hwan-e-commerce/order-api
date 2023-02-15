@@ -1,5 +1,6 @@
 package co.hwan.order.app.common.response;
 
+import co.hwan.order.app.common.exception.InvalidParamException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,4 +20,11 @@ public class GlobalExceptionHandler {
         return ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getFieldError());
     }
 
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidParamException.class)
+    public ErrorResponse handleInvalidParamException(InvalidParamException ex) {
+        log.debug(ex.getMessage());
+        return ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
 }
