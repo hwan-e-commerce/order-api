@@ -9,6 +9,8 @@ import co.hwan.order.app.order.domain.OrderItem;
 import co.hwan.order.app.order.domain.OrderItemOption;
 import co.hwan.order.app.order.domain.OrderItemOptionGroup;
 import co.hwan.order.app.order.repository.OrderRepository;
+import co.hwan.order.app.order.service.dto.OrderItemInfo;
+import co.hwan.order.app.order.service.dto.OrderItemInfo.Type;
 import co.hwan.order.app.order.web.OrderDto;
 import co.hwan.order.app.order.web.OrderDto.OrderRegisterResponse;
 import java.util.List;
@@ -64,6 +66,14 @@ public class OrderService {
         initOrder.setOrderItems(orderItems);
         initOrder.calculateTotalAmount();
         Order savedOrder = orderRepository.save(initOrder);
+
+        // 주문 성공 후 요청을 보냄
+        List<OrderItemInfo> orderItemInfos = savedOrder.getOrderItems()
+            .stream()
+            .map(orderItem -> OrderItemInfo.of(orderItem, Type.DECREASE))
+            .collect(Collectors.toList());
+
+        stockService.sendStockMessageFromOrderItems(orderItemInfos, Type.DECREASE);
 
         return OrderRegisterResponse
             .builder()

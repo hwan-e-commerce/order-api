@@ -37,11 +37,11 @@ dependencies {
     // redission
     implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
 
+    // aws
+    implementation platform('software.amazon.awssdk:bom:2.15.0')
+    implementation 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.1.RELEASE'
     implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
-//    // redis
-//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//    implementation 'org.redisson:redisson-spring-boot-starter'
-//    implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
+
     // mysql
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'

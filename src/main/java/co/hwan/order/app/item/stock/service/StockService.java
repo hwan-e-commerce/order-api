@@ -5,6 +5,11 @@ import co.hwan.order.app.common.exception.InvalidParamException;
 import co.hwan.order.app.item.domain.Item;
 import co.hwan.order.app.item.stock.web.StockDto;
 import co.hwan.order.app.item.stock.web.StockDto.StockRegisterResponse;
+import co.hwan.order.app.order.service.StockSQSMessageSender;
+import co.hwan.order.app.order.service.dto.OrderItemInfo;
+import co.hwan.order.app.order.service.dto.OrderItemInfo.Type;
+import co.hwan.order.app.order.service.dto.StockSQSMessage;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +25,7 @@ public class StockService {
 
     private static final String STOCK_KEY_PREFIX = "STOCK_";
     private final StringRedisTemplate stringRedisTemplate;
+    private final StockSQSMessageSender sqsMessageSender;
 
     @Transactional
     public StockRegisterResponse registStockOfItem(StockDto.StockRegisterRequest dto)  {
@@ -58,6 +64,11 @@ public class StockService {
         stringValueOperations.set(itemToken, String.valueOf(remain));
     }
 
+    public void sendStockMessageFromOrderItems(List<OrderItemInfo> orderItemInfos, Type type) {
+        StockSQSMessage stockSQSMessage = new StockSQSMessage(orderItemInfos);
+        sqsMessageSender.sendStockMessage(stockSQSMessage);
+    }
+
 
     private void checkStockExistInRedis(String stockOfRedis) {
         if(stockOfRedis == null) {
@@ -76,4 +87,6 @@ public class StockService {
             throw new InvalidParamException("재고가 부족합니다.");
         }
     }
+
+
 }

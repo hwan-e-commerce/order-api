@@ -49,7 +49,6 @@ public class OrderItem extends Timestamp {
         DELIVERY_PREPARE("배송준비중"),
         DELIVERING("배송중"),
         COMPLETE_DELIVERY("배송완료");
-
         private final String description;
     }
 
