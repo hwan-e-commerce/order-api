@@ -1,5 +1,6 @@
 server:
   shutdown: graceful
+  port: 8080
 
 spring:
   config:
@@ -19,16 +20,14 @@ spring:
       read-only: false
       connection-timeout: 3000
       connectionTestQuery : SELECT 1
-
-
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
+    jpa:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-        show_sql: true
-        format_sql: true
+        ddl-auto: none
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+          show_sql: true
+          format_sql: true
 
   redis:
     host: localhost
@@ -98,6 +97,16 @@ aws:
     prefix: /config
     profile-separator: _
     name: orderapi
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      access-key: ${access.key}
+      secret-key: ${secret.key}
 
 management:
   endpoints:

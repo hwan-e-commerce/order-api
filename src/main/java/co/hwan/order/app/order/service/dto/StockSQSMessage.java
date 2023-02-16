@@ -12,4 +12,10 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class StockSQSMessage {
     private final List<OrderItemInfo> orderInfos;
+    private final Type type;
+
+    public enum Type {
+        INCREASE,
+        DECREASE
+    }
 }

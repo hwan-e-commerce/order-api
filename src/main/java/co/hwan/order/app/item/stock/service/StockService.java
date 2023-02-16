@@ -7,8 +7,8 @@ import co.hwan.order.app.item.stock.web.StockDto;
 import co.hwan.order.app.item.stock.web.StockDto.StockRegisterResponse;
 import co.hwan.order.app.order.service.StockSQSMessageSender;
 import co.hwan.order.app.order.service.dto.OrderItemInfo;
-import co.hwan.order.app.order.service.dto.OrderItemInfo.Type;
 import co.hwan.order.app.order.service.dto.StockSQSMessage;
+import co.hwan.order.app.order.service.dto.StockSQSMessage.Type;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +65,7 @@ public class StockService {
     }
 
     public void sendStockMessageFromOrderItems(List<OrderItemInfo> orderItemInfos, Type type) {
-        StockSQSMessage stockSQSMessage = new StockSQSMessage(orderItemInfos);
+        StockSQSMessage stockSQSMessage = new StockSQSMessage(orderItemInfos, type);
         sqsMessageSender.sendStockMessage(stockSQSMessage);
     }
 

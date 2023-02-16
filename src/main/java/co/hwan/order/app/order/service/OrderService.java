@@ -10,9 +10,10 @@ import co.hwan.order.app.order.domain.OrderItemOption;
 import co.hwan.order.app.order.domain.OrderItemOptionGroup;
 import co.hwan.order.app.order.repository.OrderRepository;
 import co.hwan.order.app.order.service.dto.OrderItemInfo;
-import co.hwan.order.app.order.service.dto.OrderItemInfo.Type;
+import co.hwan.order.app.order.service.dto.StockSQSMessage.Type;
 import co.hwan.order.app.order.web.OrderDto;
 import co.hwan.order.app.order.web.OrderDto.OrderRegisterResponse;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,13 @@ public class OrderService {
         // 주문 성공 후 요청을 보냄
         List<OrderItemInfo> orderItemInfos = savedOrder.getOrderItems()
             .stream()
-            .map(orderItem -> OrderItemInfo.of(orderItem, Type.DECREASE))
+            .map(
+                orderItem -> OrderItemInfo.of(
+                    initOrder.getOrderToken(),
+                    orderItem.getItemToken(),
+                    orderItem.getOrderCount(),
+                    initOrder.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE)
+            ))
             .collect(Collectors.toList());
 
         stockService.sendStockMessageFromOrderItems(orderItemInfos, Type.DECREASE);
