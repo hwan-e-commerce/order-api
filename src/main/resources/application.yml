@@ -75,7 +75,7 @@ spring:
     username: ${jdbc.username}
     password: ${jdbc.password}
     hikari:
-      maximum-pool-size: 50
+      maximum-pool-size: 30
       read-only: false
       connection-timeout: 3000
       connectionTestQuery: SELECT 1
