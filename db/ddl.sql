@@ -131,3 +131,17 @@ create table order_item_options
 
     FOREIGN KEY (order_item_option_group_id) REFERENCES order_item_option_groups(id)
 ) comment 'order_item_options' charset = utf8mb4;
+
+use `order`;
+-- stock history
+create table stock_history (
+    id bigint not null auto_increment,
+    item_token varchar(255) not null,
+    order_cnt integer not null,
+    order_token varchar(255) not null,
+    type varchar(255) comment '이벤트 타입',
+    ordered_at varchar(255) not null,
+    primary key (id)
+) engine=InnoDB;
+
+alter table stock_history add constraint UK_order_token unique (order_token)
