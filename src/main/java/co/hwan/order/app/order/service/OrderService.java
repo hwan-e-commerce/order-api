@@ -36,7 +36,7 @@ public class OrderService {
             .stream()
             .map(
                 registerOrderItem -> {
-                    Item item = itemRepository.findWithPessimisticLockByItemToken(registerOrderItem.getItemToken())
+                    Item item = itemRepository.findByItemToken(registerOrderItem.getItemToken())
                         .orElseThrow(EntityNotFoundException::new);
 
                     stockService.decreaseStockOfItem(item, registerOrderItem.getOrderCount());
