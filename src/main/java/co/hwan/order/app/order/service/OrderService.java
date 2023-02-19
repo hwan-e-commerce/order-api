@@ -17,9 +17,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderService {
@@ -66,9 +68,15 @@ public class OrderService {
 
         initOrder.setOrderItems(orderItems);
         initOrder.calculateTotalAmount();
+
+        log.info("이때 Save가 호출된다.");
         Order savedOrder = orderRepository.save(initOrder);
+        log.info("이때 Save가 끝났다.");
 
         // 주문 성공 후 요청을 보냄
+        // 트랜잭션 끝내고 메시지 보내자
+        // 큰 병목 지점은 아님
+        // lazy하게 쿼리를 보냄
         List<OrderItemInfo> orderItemInfos = savedOrder.getOrderItems()
             .stream()
             .map(
