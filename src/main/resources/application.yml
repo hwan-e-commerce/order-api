@@ -61,6 +61,12 @@ logging:
     com.zaxxer.hikari.pool.HikariPool: debug
 
 ---
+server:
+  tomcat:
+    threads:
+      max: 300
+    accept-count: 150
+
 spring:
   config:
     activate:
