@@ -85,6 +85,7 @@ spring:
       read-only: false
       connection-timeout: 3000
       connectionTestQuery: SELECT 1
+      max-lifetime: 5700
 
   jpa:
     hibernate:
